@@ -34,6 +34,7 @@ export class TodayMeetingsComponent implements OnInit {
     private graphService: GraphService, private sanitizer: DomSanitizer, private dataService: DataService, private shrService: SharePointDataServicesService, private graphSrv: GraphService) { }
 
   async ngOnInit() {
+    console.log('master push');
     this.getGraphUsers();
     // this.joinMeetingInterval();
     this.spinner.show();
