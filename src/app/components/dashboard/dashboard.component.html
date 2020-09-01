@@ -384,11 +384,91 @@
               </div>
               <div [attr.id]="'collapseOne_' + i" class="collapse show" [attr.aria-labelledby]="'accordion_' + i"
                 data-parent="#meetingNotes">
-                <div class="row bg-light p-2 py-3" *ngIf="met?.Notes.length > 0">
+                <table class="table ">
+                  <thead class="thead-light">
+                    <tr>
+                      <th>Assignee</th>
+                      <th>Notes</th>
+                      <th>Notes Type</th>
+                      <th>Assigned To</th>
+                      <th>Created Date</th>
+                      <th>Due Date</th>
+                      <th>Task Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr *ngFor="let note of met.Notes | LockFilter: search">
+
+                      <td class="" (mouseover)="userProfile('assin')">
+                        <a id="assin" data-toggle="tooltip" data-placement="right"
+                          [title]="getStatus(note.CreatedBy)?.card">
+                          <span class="td-attendee-more1" *ngIf="!getStatus(note.CreatedBy)?.status">
+                            {{getStatus(note.CreatedBy)?.displayName | uppercase}}
+                          </span>
+                          <span class="td-attendee1" *ngIf="getStatus(note.CreatedBy)">
+                            <img [src]="getStatus(note.CreatedBy)?.file" alt="" class="img-fluid">
+                          </span>
+                        </a>
+                      </td>
+
+                      <td>
+                        <span>{{note.Description}}</span> </td>
+                      <td>
+                        <div [ngSwitch]="note.Type">
+
+                          <p *ngSwitchCase="'Action'">{{note.Type}}</p>
+                          <p *ngSwitchCase="'Decision'">{{note.Type}}</p>
+                          <p *ngSwitchCase="'Risk'">{{note.Type}}</p>
+                          <p *ngSwitchDefault>None</p>
+                        </div>
+                      </td>
+
+                      <td class="" *ngIf="note.Type != ''" (mouseover)="userProfile('assin2')">
+                        <a id="assin2" data-toggle="tooltip" data-placement="right"
+                          [title]="getStatus(note.AssignedTo)?.card">
+                          <span class="td-attendee-more1 ml-1" *ngIf="!getStatus(note.AssignedTo)?.status">
+                            {{getStatus(note.AssignedTo)?.displayName | uppercase}}
+                          </span>
+                          <span class="td-attendee1" *ngIf="getStatus(note.AssignedTo)">
+                            <img [src]="getStatus(note.AssignedTo)?.file" alt="" class="img-fluid">
+                          </span>
+                        </a>
+                      </td>
+
+                      <td class="" *ngIf="note.Type == ''">
+                        <p>None</p>
+                      </td>
+                      <td>{{note?.AssignedDate | date }}</td>
+                      <td class="">{{note?.DueDate | date}} </td>
+
+                      <td class="">{{note?.DueDate | date}} </td>
+                      <td class="">
+                        <div [ngSwitch]="note.Status">
+                          <p *ngSwitchCase="'Planned'">{{note?.Status}}</p>
+                          <p *ngSwitchCase="'In Progress'">{{note?.Status}}</p>
+                          <p *ngSwitchCase="'Completed'">{{note?.Status}}</p>
+                          <p *ngSwitchDefault>None</p>
+                        </div>
+                      </td>
+
+                      <td class="">
+                        <!-- <button class="btn btn-sm btn-outline-success" > -->
+                        <i class="fas fa-edit" data-toggle="modal" (click)="editNote(note,1)"
+                          data-target="#noteEdit"></i>
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table>
+
+
+                <div class="row bg-light p-2 py-3 align-items-center" *ngIf="met?.Notes.length > 0">
 
                   <div class="col-5">
                     <div class="row ">
-                      <div class="col-2 pr-0">
+                      <div class="col-2 pr-0 ">
                         <h6 class="mb-0">Assignee</h6>
                       </div>
                       <div class="col-10">
@@ -425,7 +505,7 @@
                         <!-- <button type="button" id="testex" class="btn btn-secondary" data-toggle="tooltip" data-placement="right" title="Tooltip on right">
                           Tooltip on right
                         </button> -->
-                        <div class="col-2 " (mouseover)="userProfile('assin')">
+                        <div class="col-2 text-center" (mouseover)="userProfile('assin')">
                           <a id="assin" data-toggle="tooltip" data-placement="right"
                             [title]="getStatus(note.CreatedBy)?.card">
                             <span class="td-attendee-more1" *ngIf="!getStatus(note.CreatedBy)?.status">

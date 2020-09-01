@@ -411,22 +411,6 @@ box-shadow: 0 .125rem .25rem #109CF1 !important;
   border-color: #EBEFF2 !important;
 }
 
-.table td,
-.table th {
-  border-top: none !important;
-  color: #323C47 !important;
-}
-
-.table td {
-  cursor: pointer;
-  vertical-align: middle;
-  color: #707683;
-}
-
-.table-hover tbody tr:hover {
-  color: #323C47;
-  background-color: #F3F7F8;
-}
 
 .td-main-text {
   font-size: 15px;
@@ -597,8 +581,12 @@ box-shadow: 0 .125rem .25rem #109CF1 !important;
   text-align: left;
   font-weight: 600;
   text-decoration: none;
-  color: #666666;
-  font-size: 16px !important;
+  color: #023761;
+  font-size: 15px !important;
+}
+
+#meetingNotes>.card>.card-header>h2>button:hover {
+  color: #0e4e83;
 }
 
 #meetingNotes>.card>.card-header>h2>button:focus {
