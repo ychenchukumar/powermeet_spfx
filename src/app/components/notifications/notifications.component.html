@@ -12,7 +12,9 @@
             <span class="td-attendee1" *ngIf="getUserStatus(notif?.AssigneeName)">
               <img [src]="getUserStatus(notif?.AssigneeName)?.file" alt="" class="img-fluid">
             </span>
-
+            <span class="text-info">
+              {{getUserStatus(notif?.AssigneeName)?.fullname}}
+            </span>
 
           </div>
 
