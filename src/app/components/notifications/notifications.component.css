@@ -1,3 +1,10 @@
+.notification-card {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
 .notification-card:hover {
   cursor: pointer;
   box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
