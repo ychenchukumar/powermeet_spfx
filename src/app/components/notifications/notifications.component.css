@@ -65,3 +65,28 @@
   font-size: 14px;
   color: #3e3e3e;
 }
+.td-attendee1>img {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  border-radius: 3rem;
+  margin-left: -0.8rem;
+}
+
+.table td,
+.table th {
+  padding: 0.5rem;
+}
+
+.td-attendee-more1 {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  color: #fff;
+  line-height: 3rem;
+  text-align: center;
+  background: #c4c4c4;
+  padding: 0.4rem;
+  margin-left: -0.8rem;
+}
+
