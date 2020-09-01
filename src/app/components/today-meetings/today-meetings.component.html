@@ -31,12 +31,13 @@
 <!-- upcoming meetings section :start  -->
 <!-- <div class="divider-one"></div> -->
 
-<div class="powermeet-contianer mt3">
-  <div class="d-flex justify-content-between my-4">
+<div class="powermeet-contianer">
+  <div class="powermeet-filters">
     <div>
       <h5 class="mb-1">Upcoming Meetings</h5>
+      <p class="mb-0">Viewing data for : <b class="text-secondary">{{overviewDate}}</b></p>
     </div>
-    <div class="d-flex mt-2">
+    <div class="d-flex ">
       <div class="mr-2 ">
         <ul class="list-group list-group-horizontal date-filter shadow-sm">
           <li id="toid1" class="list-group-item active" (click)="filters('Day','toid1')">Today</li>
@@ -52,21 +53,22 @@
 
     </div>
   </div>
-  <div *ngIf="isWeek">
+
+  <div class="meeting-card p-1" *ngIf="isWeek">
+
     <img src="https://restfuncapp2020080721521.blob.core.windows.net/blob/Screenshot_146.png" style="width: 100%;" />
   </div>
   <!-- completed meetings section :start  -->
   <div class="row" *ngIf="!isWeek">
     <div class="col-12">
-      <div class="card card-body shadow-sm p-0 bdr">
+      <div class="meeting-card">
 
         <!-- card header section :start  -->
 
         <!-- card header section :end  -->
 
         <!-- card body section : start  -->
-        <div class="table-responsive" style="height: calc(100vh - 120px) !important;
-    overflow-y: auto;">
+        <div class="table-responsive">
           <table class="table table-hover">
             <thead class="bg-light">
               <tr>
@@ -122,46 +124,45 @@
                 </td>
 
                 <td class="text-center">
-                  <span class=" td-main-text" *ngIf="meeting1?.IsRecurring">
+                  <p class="p" *ngIf="meeting1?.IsRecurring">
                     Every Day
-                  </span>
-                  <br>
-                  <span class=" td-main-text">
+                  </p>
+
+                  <p class="text-muted">
                     {{ConvertTolocal(meeting1?.StartDate) | date:'HH:mm'}}
-                  </span>
+                  </p>
                 </td>
                 <td class="text-center">
-                  <span class="td-main-text" *ngIf="meeting1?.AgendaItems.length > 0">
+                  <p class="p" *ngIf="meeting1?.AgendaItems.length > 0">
                     {{getapprovedcount(meeting1?.AgendaItems)}} approved
                     of {{meeting1?.AgendaItems.length}}
-                  </span>
-                  <span class="td-main-text clr-four hover" *ngIf="meeting1?.AgendaItems.length==0"
-                    (click)="getmeeting(meeting1)">
+                  </p>
+                  <p class="pclr-four hover" *ngIf="meeting1?.AgendaItems.length==0" (click)="getmeeting(meeting1)">
                     Add Agenda
-                  </span>
+                  </p>
                 </td>
 
                 <td class="text-center">
-                  <span class="td-main-text clr-four hover">
+                  <p class=" hover clr-four ">
                     Notes
-                  </span>
-                  <br>
-                  <span class="td-action-icon mx-1" [routerLink]="['/Notes']"
+                  </p>
+
+                  <p class="td-action-icon mx-1 clr-four " [routerLink]="['/Notes']"
                     [queryParams]="{ Id: meeting1?.MeetingID,'start': 'false'}">
                     <i class="fa fa-plus-square-o" style="font-size: 20px;"></i>
-                  </span>
+                  </p>
                 </td>
 
                 <td class="text-center">
-                  <span class="td-main-text clr-four hover">
+                  <p class=" clr-four hover">
                     Start
-                  </span>
-                  <br>
-                  <span class="td-action-icon mx-1" [routerLink]="['/Notes']"
+                  </p>
+
+                  <p class="td-action-icon mx-1" [routerLink]="['/Notes']"
                     [queryParams]="{ Id: meeting1?.MeetingID,'start': 'true'}">
                     <i class="fa fa-play text-success" style="font-size: 20px;"></i>
 
-                  </span>
+                  </p>
                 </td>
 
               </tr>

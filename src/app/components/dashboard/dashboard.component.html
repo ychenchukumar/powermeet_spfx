@@ -173,8 +173,8 @@
           </div>
         </div>
       </div>
-      <div class="col-md-2"></div>
-      <div class="col-md-4">
+
+      <div class="col-md-4 ml-auto">
         <div style="display: block; ">
           <!-- <img [src]="logo"/> -->
           <canvas baseChart [data]="doughnutChartData" [legend]="lineChartLegend" [colors]="chartColors1"
@@ -188,7 +188,7 @@
 
     <!-- All Statistics start -->
     <div class="row" *ngIf="tgAdmin">
-      <div class="col-md-8">
+      <div class="col-md-6">
         <div class="row text-left">
           <!-- <div class="col-md-4 p-1 stats-card  tiles1" id="tid1" (click)="tabFilter('','')"
               (click)="heading = 'All Items'" (click)="Changecolor('tid1')">
@@ -309,7 +309,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 ml-auto">
         <div style="display: block;">
           <!-- <img [src]="logo"/> -->
           <canvas baseChart [data]="doughnutChartData" [legend]="lineChartLegend" [colors]="chartColors"
@@ -357,7 +357,7 @@
                                         <option value="All">All</option>
                                         <option *ngFor="let met of Meeting" value="{{met?.MeetingID}}">{{met?.MeetingName}}</option>
                                     </select> -->
-              <input class="form-control py-3" (keyup)="searchData($event)" placeholder="Search Notes.."
+              <input class="form-control py-4" (keyup)="searchData($event)" placeholder="Search Notes.."
                 [(ngModel)]="search" />
             </div>
             <!-- <div class="col-3">
@@ -384,7 +384,7 @@
               </div>
               <div [attr.id]="'collapseOne_' + i" class="collapse show" [attr.aria-labelledby]="'accordion_' + i"
                 data-parent="#meetingNotes">
-                <table class="table ">
+                <table class="table mb-0">
                   <thead class="thead-light">
                     <tr>
                       <th>Assignee</th>
@@ -401,7 +401,7 @@
                   <tbody>
                     <tr *ngFor="let note of met.Notes | LockFilter: search">
 
-                      <td class="" (mouseover)="userProfile('assin')">
+                      <td class="text-center" (mouseover)="userProfile('assin')">
                         <a id="assin" data-toggle="tooltip" data-placement="right"
                           [title]="getStatus(note.CreatedBy)?.card">
                           <span class="td-attendee-more1" *ngIf="!getStatus(note.CreatedBy)?.status">
@@ -442,8 +442,6 @@
                       </td>
                       <td>{{note?.AssignedDate | date }}</td>
                       <td class="">{{note?.DueDate | date}} </td>
-
-                      <td class="">{{note?.DueDate | date}} </td>
                       <td class="">
                         <div [ngSwitch]="note.Status">
                           <p *ngSwitchCase="'Planned'">{{note?.Status}}</p>
@@ -453,7 +451,7 @@
                         </div>
                       </td>
 
-                      <td class="">
+                      <td class="text-center">
                         <!-- <button class="btn btn-sm btn-outline-success" > -->
                         <i class="fas fa-edit" data-toggle="modal" (click)="editNote(note,1)"
                           data-target="#noteEdit"></i>
