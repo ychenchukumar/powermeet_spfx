@@ -52,7 +52,7 @@ export class TodayMeetingsComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    console.log("master push from ui brnach");
+    console.log("master push from jagannath");
     this.getGraphUsers();
     // this.joinMeetingInterval();
     this.spinner.show();
