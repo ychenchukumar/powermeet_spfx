@@ -16,6 +16,10 @@ body {
   background: #f3f2f1 !important;
 }
 
+:focus {
+  outline: none !important;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 5px;
