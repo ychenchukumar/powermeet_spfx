@@ -242,7 +242,8 @@ body {
   border-radius: 0.25rem;
   cursor: pointer;
 }
-.mt3{
+
+.mt3 {
   margin-top: 2rem;
 }
 
@@ -344,6 +345,7 @@ body {
   background: gray;
   border-bottom-right-radius: 5rem;
 }
+
 .members-list {
   list-style-type: none;
   /* padding: 0.25rem;
@@ -372,6 +374,7 @@ body {
 .members-list>li>.user-img>img {
   border-radius: 5rem;
 }
+
 .attendee-parent>.dropdown-menu {
   min-width: 300px;
   max-height: 300px;
@@ -382,4 +385,18 @@ body {
   width: 3.5rem;
 
 }
+
 /* hover card end */
+.table td {
+  padding: 0.7rem !important;
+}
+
+.list-group-item {
+  padding: 0.45rem 1rem !important;
+  cursor: pointer;
+}
+
+.meeting-card>.table-responsive {
+  border-top-right-radius: 0.25rem;
+  border-top-left-radius: 0.25rem;
+}
