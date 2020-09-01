@@ -139,26 +139,25 @@
                         </div>
 
                       </div>
-                      <div class="dropdown-menu dd">
-                        <div class="form-group px-2 mb-0">
+                      <div class="dropdown-menu p-0">
+                        <div class="form-group mb-0">
+                          <ul class=" attendee-list-drpdwn members-list mb-0">
+                            <li class="mb-1" *ngFor="let attendee of meeting1?.MeetingAttendees; let j = index">
+                              <div class="user-img ml-2">
+                                <div class="td-attendee-more1" *ngIf="!getStatus(attendee?.Email)?.status"
+                                  [style.background-color]="colorsArray[0]">
+                                  {{getStatus(attendee?.Email)?.displayName | uppercase}}
+                                </div>
+                                <div class="td-attendee" *ngIf="getStatus(attendee?.Email)">
+                                  <img [src]="getStatus(attendee?.Email)?.file" alt="" class="img-fluid">
+                                </div>
+                              </div>
+                              <div class="mbmr-name">
+                                {{getStatus(attendee?.Email)?.fullname}}
+                              </div>
+                            </li>
+                          </ul>
                         </div>
-                        <ul *ngFor="let attendee of meeting1?.MeetingAttendees; let j = index"
-                          class="members-list mb-0">
-                          <li class="mb-1">
-                            <span class="user-img ml-2">
-                              <span class="td-attendee-more1" *ngIf="!getStatus(attendee?.Email)?.status"
-                                [style.background-color]="colorsArray[0]">
-                                {{getStatus(attendee?.Email)?.displayName | uppercase}}
-                              </span>
-                              <span class="td-attendee" *ngIf="getStatus(attendee?.Email)">
-                                <img [src]="getStatus(attendee?.Email)?.file" alt="" class="img-fluid">
-                              </span>
-                            </span>
-                            <span class="mbmr-name">
-                              {{getStatus(attendee?.Email)?.fullname}}
-                            </span>
-                          </li>
-                        </ul>
                       </div>
                     </div>
                   </div>
