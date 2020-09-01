@@ -111,7 +111,9 @@ export class MeetingDetailsComponent implements OnInit {
 
   constructor(public spinner: NgxSpinnerService, private shrService: SharePointDataServicesService, public proxy: ProxyService, private router: Router, private dataService: DataService, private graphSrv: GraphService) { }
   MeetingID: string = '00000000-0000-0000-0000-000000000000';
+  me: string;
   ngOnInit() {
+    this.me = sessionStorage.getItem('user');
     this.agendaList = this.standardTemplate[0].agendas;
     console.log('agendas', this.standardTemplate);
     this.spinner.show();
@@ -154,20 +156,46 @@ export class MeetingDetailsComponent implements OnInit {
   addtoAgendaList(event, data) {
     if (event.target.checked) {
       this.agendaList1.push(data);
-    }else{
-      const inx = this.agendaList1.findIndex(x=> x.AgendaName == data.AgendaName);
-      this.agendaList1.splice(inx,1);
+    } else {
+      const inx = this.agendaList1.findIndex(x => x.AgendaName == data.AgendaName);
+      this.agendaList1.splice(inx, 1);
     }
     console.log('agendaList1', this.agendaList1);
   }
-  saveToMeeting(){
+  adminApprove(agenda){
+    const listItem = {
+      "fields": {
+        "IsApproved": true,
+      } 
+    };
+    const inx = this.Meeting.AgendaItems.findIndex(x => x.AgendaID == agenda.AgendaID);
+    this.shrService.putAgendaItem(sessionStorage.getItem('groupId'), listItem, agenda.AgendaID).then(res => {
+      console.log('approve res', res);
+      const agenda = new AgendaItems();
+      agenda.AgendaName = res.fields.Title;
+      agenda.AgendaDescription = res.fields.AgendaDescription;
+      agenda.Duration = res.fields.AgendaDuration;
+      agenda.StartTime = res.fields.EndDateTime;
+      agenda.EndTime = res.fields.StartDateTime;
+      agenda.AgendaID = res.fields.id;
+      agenda.AgendaAssignees = new AgendaAssignees();
+      agenda.AgendaAssignees.Email = res.fields.AgendaAssignees;
+      agenda.MeetingID = res.fields.MeetingLookupId;
+      agenda.Status = res.fields.AgendaItemStatus;
+      agenda.IsApproved = res.fields.IsApproved;
+      if ((this.me == 'vinay.kumar@sticsoft.io' || agenda.IsApproved == true)) {
+        this.Meeting.AgendaItems[inx] = agenda;
+      }
+    });
+  }
+  saveToMeeting() {
     const user = this.usersList.find(x => x.email == sessionStorage.getItem('user'));
     this.agendaList1.forEach(x => {
       const listItem = {
         "fields": {
           "Title": x.AgendaName,
           "AgendaDescription": x.AgendaDescription,
-          "IsApproved": true,
+          "IsApproved": false,
           "AgendaDuration": x.Duration,
           "AgendaItemStatus": x.Status,
           "StartDateTime": new Date(),
@@ -191,7 +219,9 @@ export class MeetingDetailsComponent implements OnInit {
         agenda.MeetingID = res.fields.MeetingLookupId;
         agenda.Status = res.fields.AgendaItemStatus;
         agenda.IsApproved = res.fields.IsApproved;
-        this.Meeting.AgendaItems.push(agenda);
+        if ((this.me == 'vinay.kumar@sticsoft.io' || agenda.IsApproved == true)) {
+          this.Meeting.AgendaItems.push(agenda);
+        }
         let body = {
           "body": {
             "content": `<at id=\"0\">${user.fullname}</at> added an Agenda : <a href='https://teams.microsoft.com/l/entity/af49f63f-8dd5-417b-b3f5-96658fa88dbd/_djb2_msteams_prefix_2521105317?context=%7B%22subEntityId%22%3A${this.MeetingID}%2C%22channelId%22%3A%2219%3A66897d02aa6745428f4c8117cc197f39%40thread.tacv2%22%7D&groupId=54b63089-c127-4cd9-9dd5-72013c0c3eaa&tenantId=84a9843b-0b29-4729-ba8a-8155cf55c7ae'>${res.fields.Title}</a>`,
@@ -240,24 +270,24 @@ export class MeetingDetailsComponent implements OnInit {
         const temp = { Name: '', Id: '', AgendaItems: new Array<AgendaItems>() };
         temp.Name = x.fields.Title;
         temp.Id = x.fields.id;
-          this.shrService.getTemplateAgendas(sessionStorage.getItem('groupId'), x.fields.id).then(res => {
-            console.log('agenda tempkakte res', res);
-            res.forEach(y => {
-              this.shrService.getAgendaItemsById(sessionStorage.getItem('groupId'), y.fields.AgendaLookupId).then(res => {
-                const agenda = new AgendaItems();
-                agenda.AgendaName = res.fields.Title;
-                agenda.AgendaDescription = res.fields.AgendaDescription;
-                agenda.Duration = res.fields.AgendaDuration;
-                agenda.EndTime = res.fields.EndDateTime;
-                agenda.StartTime = res.fields.StartDateTime;
-                agenda.Status = res.fields.AgendaItemStatus;
-                agenda.IsApproved = res.fields.IsApproved;
-                temp.AgendaItems.push(agenda);
-              });
-
+        this.shrService.getTemplateAgendas(sessionStorage.getItem('groupId'), x.fields.id).then(res => {
+          console.log('agenda tempkakte res', res);
+          res.forEach(y => {
+            this.shrService.getAgendaItemsById(sessionStorage.getItem('groupId'), y.fields.AgendaLookupId).then(res => {
+              const agenda = new AgendaItems();
+              agenda.AgendaName = res.fields.Title;
+              agenda.AgendaDescription = res.fields.AgendaDescription;
+              agenda.Duration = res.fields.AgendaDuration;
+              agenda.EndTime = res.fields.EndDateTime;
+              agenda.StartTime = res.fields.StartDateTime;
+              agenda.Status = res.fields.AgendaItemStatus;
+              agenda.IsApproved = res.fields.IsApproved;
+              temp.AgendaItems.push(agenda);
             });
-          })
-          this.TemplateArray.push(temp);
+
+          });
+        })
+        this.TemplateArray.push(temp);
       });
     })
   }
@@ -294,7 +324,9 @@ export class MeetingDetailsComponent implements OnInit {
         //   agenda.Attachments.push(attachment);
         //  });
         // });
-        this.Meeting.AgendaItems.push(agenda);
+        if ((this.MeetingObj.Organizer == 'TestSite99@sticsoft.io' && sessionStorage.getItem('user') == 'vinay.kumar@sticsoft.io') || agenda.IsApproved == true) {
+          this.Meeting.AgendaItems.push(agenda);
+        }
       });
     });
     // this.proxy.Get('meetings/' + Id).subscribe(res => {
@@ -436,7 +468,7 @@ export class MeetingDetailsComponent implements OnInit {
       "fields": {
         "Title": this.AgendaItem.AgendaName,
         "AgendaDescription": this.AgendaItem.AgendaDescription,
-        "IsApproved": true,
+        "IsApproved": false,
         "AgendaDuration": this.AgendaItem.Duration,
         "AgendaItemStatus": "Completed",
         "StartDateTime": new Date(),
@@ -451,7 +483,7 @@ export class MeetingDetailsComponent implements OnInit {
         "fields": {
           "Title": this.agendaName,
           "AgendaDescription": this.agendaName,
-          "IsApproved": true,
+          "IsApproved": false,
           "AgendaDuration": "5 Mins",
           "AgendaItemStatus": "Completed",
           "StartDateTime": new Date(),
@@ -568,30 +600,32 @@ export class MeetingDetailsComponent implements OnInit {
     this.spinner.hide();
   }
   agendaResponse(res, status, inx) {
-    const agenda = new AgendaItems();
-    agenda.AgendaName = res.fields.Title;
-    agenda.AgendaDescription = res.fields.AgendaDescription;
-    agenda.Duration = res.fields.AgendaDuration;
-    agenda.StartTime = res.fields.EndDateTime;
-    agenda.EndTime = res.fields.StartDateTime;
-    agenda.AgendaID = res.fields.id;
-    agenda.AgendaAssignees = new AgendaAssignees();
-    agenda.AgendaAssignees.Email = res.fields.AgendaAssignees;
-    if (res.fields.AgendaAttendees) {
-      var nameArr = res.fields.AgendaAttendees.split('|');
-      nameArr.forEach(element => {
-        const attendee = new AgendaAttendees();
-        attendee.Email = element;
-        if (element != '' && element != 'TestSite99@sticsoft.io') { agenda.AgendaAttendees.push(attendee); }
-      });
-    }
-    agenda.MeetingID = res.fields.MeetingLookupId;
-    agenda.Status = res.fields.AgendaItemStatus;
-    agenda.IsApproved = res.fields.IsApproved;
-    if (status == false) {
-      this.Meeting.AgendaItems.push(agenda);
-    } else {
-      this.Meeting.AgendaItems[inx] = agenda;
+    if (res.fields.IsApproved == true || this.me == 'vinay.kumar@sticsoft.io') {
+      const agenda = new AgendaItems();
+      agenda.AgendaName = res.fields.Title;
+      agenda.AgendaDescription = res.fields.AgendaDescription;
+      agenda.Duration = res.fields.AgendaDuration;
+      agenda.StartTime = res.fields.EndDateTime;
+      agenda.EndTime = res.fields.StartDateTime;
+      agenda.AgendaID = res.fields.id;
+      agenda.AgendaAssignees = new AgendaAssignees();
+      agenda.AgendaAssignees.Email = res.fields.AgendaAssignees;
+      if (res.fields.AgendaAttendees) {
+        var nameArr = res.fields.AgendaAttendees.split('|');
+        nameArr.forEach(element => {
+          const attendee = new AgendaAttendees();
+          attendee.Email = element;
+          if (element != '' && element != 'TestSite99@sticsoft.io') { agenda.AgendaAttendees.push(attendee); }
+        });
+      }
+      agenda.MeetingID = res.fields.MeetingLookupId;
+      agenda.Status = res.fields.AgendaItemStatus;
+      agenda.IsApproved = res.fields.IsApproved;
+      if (status == false) {
+        this.Meeting.AgendaItems.push(agenda);
+      } else {
+        this.Meeting.AgendaItems[inx] = agenda;
+      }
     }
     this.Attachments1 = [];
   }
@@ -614,7 +648,7 @@ export class MeetingDetailsComponent implements OnInit {
         "fields": {
           "Title": x.AgendaName,
           "AgendaDescription": x.AgendaDescription,
-          "IsApproved": true,
+          "IsApproved": false,
           "AgendaDuration": x.Duration,
           "AgendaItemStatus": "Completed",
           "StartDateTime": new Date(),
