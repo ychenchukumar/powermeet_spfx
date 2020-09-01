@@ -125,6 +125,7 @@
                       <th class="py-3">Targeted Audience</th>
                       <th class="text-center py-3">Duration</th>
                       <th class="text-center py-3">Action</th>
+                      <th class="text-center py-3" *ngIf="me == 'vinay.kumar@sticsoft.io'">Approve</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -273,6 +274,10 @@
                         </div>
 
                         <!-- Delete Agenda Item Modal :end-->
+                      </td>
+                      <td class="text-center" *ngIf="me == 'vinay.kumar@sticsoft.io'">
+                        <span *ngIf="!agendaitem?.IsApproved" (click)="adminApprove(agendaitem)"><i class="fa fa-check aprv-icon text-success" aria-hidden="true"></i></span>
+                        <!-- <i class="fa fa-close aprv-icon text-danger" aria-hidden="true"></i> -->
                       </td>
                     </tr>
 

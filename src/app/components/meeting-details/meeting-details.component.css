@@ -488,3 +488,8 @@ box-shadow: 0 .125rem .25rem #109CF1 !important;
   max-height: 200px;
     overflow-y: scroll;
 }
+.aprv-icon{
+  background: lightgray;
+  padding: 8px;
+  border-radius: 50%;
+}

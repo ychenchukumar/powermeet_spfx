@@ -216,6 +216,7 @@ export class TodayMeetingsComponent implements OnInit {
             meeting.MeetingDescription = x.fields.MeetingDescription;
             meeting.StartDate = x.fields.StartDateTime;
             meeting.MeetingType = x.fields.MeetingType;
+            meeting.Organizer = x.fields.Organizer;
             var nameArr = x.fields.MeetingAttendees.split("|");
             nameArr.forEach((element) => {
               const attendee = new MeetingAttendees();
@@ -354,6 +355,7 @@ export class TodayMeetingsComponent implements OnInit {
         meeting.MeetingName = res.fields.Title;
         meeting.MeetingDescription = res.fields.MeetingDescription;
         meeting.StartDate = res.fields.StartDateTime;
+        meeting.Organizer = res.fields.Organizer;
         var nameArr = res.fields.MeetingAttendees.split("|");
         nameArr.forEach((element) => {
           const attendee = new MeetingAttendees();
