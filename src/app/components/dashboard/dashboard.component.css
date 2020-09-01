@@ -1,3 +1,11 @@
+.powermeet-contianer {
+  height: calc(100vh - 70px) !important;
+  overflow-y: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+}
+
 .w-6r {
   width: 6.5rem !important;
 }
@@ -17,10 +25,9 @@
   color: #fff;
   line-height: 3rem;
   text-align: center;
-  background: #f8f9fa;
+  background: #c4c4c4;
   padding: 0.4rem;
   margin-left: -0.2rem;
-  display: block;
 }
 
 .card-attendee {
