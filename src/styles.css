@@ -267,6 +267,11 @@ table td p {
 }
 
 .powermeet-contianer {
+  height: calc(100vh - 70px) !important;
+  overflow-y: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
   margin-top: 3.5rem;
 }
 
