@@ -173,8 +173,8 @@
           </div>
         </div>
       </div>
-
-      <div class="col-md-4 ml-auto">
+      <div class="col-md-2"></div>
+      <div class="col-md-4">
         <div style="display: block; ">
           <!-- <img [src]="logo"/> -->
           <canvas baseChart [data]="doughnutChartData" [legend]="lineChartLegend" [colors]="chartColors1"
@@ -309,7 +309,8 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4 ml-auto">
+      <div class="col-md-2"></div>
+      <div class="col-md-4">
         <div style="display: block;">
           <!-- <img [src]="logo"/> -->
           <canvas baseChart [data]="doughnutChartData" [legend]="lineChartLegend" [colors]="chartColors"
@@ -334,6 +335,9 @@
           data-target="#noteEdit">
           Add New Note
         </button> -->
+        <button class="btn btn-outline-success"  data-toggle="modal" data-target="#plannerModal">
+          <img src="https://restfuncapp2020080721521.blob.core.windows.net/blob/Planner.png" width="30" />
+          Planner</button>
       </div>
 
     </div>
@@ -357,7 +361,7 @@
                                         <option value="All">All</option>
                                         <option *ngFor="let met of Meeting" value="{{met?.MeetingID}}">{{met?.MeetingName}}</option>
                                     </select> -->
-              <input class="form-control py-4" (keyup)="searchData($event)" placeholder="Search Notes.."
+              <input class="form-control py-3" (keyup)="searchData($event)" placeholder="Search Notes.."
                 [(ngModel)]="search" />
             </div>
             <!-- <div class="col-3">
@@ -384,7 +388,7 @@
               </div>
               <div [attr.id]="'collapseOne_' + i" class="collapse show" [attr.aria-labelledby]="'accordion_' + i"
                 data-parent="#meetingNotes">
-                <table class="table mb-0">
+                <table class="table ">
                   <thead class="thead-light">
                     <tr>
                       <th>Assignee</th>
@@ -400,17 +404,42 @@
 
                   <tbody>
                     <tr *ngFor="let note of met.Notes | LockFilter: search">
-
-                      <td class="text-center" (mouseover)="userProfile('assin')">
-                        <a id="assin" data-toggle="tooltip" data-placement="right"
-                          [title]="getStatus(note.CreatedBy)?.card">
-                          <span class="td-attendee-more1" *ngIf="!getStatus(note.CreatedBy)?.status">
-                            {{getStatus(note.CreatedBy)?.displayName | uppercase}}
-                          </span>
-                          <span class="td-attendee1" *ngIf="getStatus(note.CreatedBy)">
-                            <img [src]="getStatus(note.CreatedBy)?.file" alt="" class="img-fluid">
-                          </span>
-                        </a>
+                      <td class="pl-4">
+                        <div class="dropdown dropright Participants-parent1">
+                          <div class=" " data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span class="td-attendee1-more1"
+                              *ngIf="!getStatus(note.CreatedBy)?.status"
+                              [style.background-color]="colorsArray[0]">
+                              {{getStatus(note.CreatedBy)?.displayName | uppercase}}
+                            </span>
+                            <span class="td-attendee1" *ngIf="getStatus(note.CreatedBy)">
+                              <img [src]="getStatus(note.CreatedBy)?.file" alt="" class="img-fluid">
+                            </span>
+                          </div>
+                          <div class="dropdown-menu dd">
+                            <div class="form-group px-2 mb-0">
+                              <input class="form-control" placeholder="Search for member" type="text" name="">
+                            </div>
+                            <ul class="members-list mb-0">
+                              <li class="mb-1">
+                                <span class="user-img ml-2">
+                                  <span class="td-attendee1-more1"
+                                    *ngIf="!getStatus(note.CreatedBy)?.status"
+                                    [style.background-color]="colorsArray[0]">
+                                    {{getStatus(note.CreatedBy)?.displayName | uppercase}}
+                                  </span>
+                                  <span class="td-attendee1" *ngIf="getStatus(note.CreatedBy)">
+                                    <img [src]="getStatus(note.CreatedBy)?.file" alt=""
+                                      class="img-fluid">
+                                  </span>
+                                </span>
+                                <span class="mbmr-name">
+                                  {{getStatus(note.CreatedBy)?.fullname}}
+                                </span>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
                       </td>
 
                       <td>
@@ -425,16 +454,42 @@
                         </div>
                       </td>
 
-                      <td class="" *ngIf="note.Type != ''" (mouseover)="userProfile('assin2')">
-                        <a id="assin2" data-toggle="tooltip" data-placement="right"
-                          [title]="getStatus(note.AssignedTo)?.card">
-                          <span class="td-attendee-more1 ml-1" *ngIf="!getStatus(note.AssignedTo)?.status">
-                            {{getStatus(note.AssignedTo)?.displayName | uppercase}}
-                          </span>
-                          <span class="td-attendee1" *ngIf="getStatus(note.AssignedTo)">
-                            <img [src]="getStatus(note.AssignedTo)?.file" alt="" class="img-fluid">
-                          </span>
-                        </a>
+                      <td class="pl-4">
+                        <div class="dropdown dropright Participants-parent1">
+                          <div class=" " data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span class="td-attendee1-more1"
+                              *ngIf="!getStatus(note.AssignedTo)?.status"
+                              [style.background-color]="colorsArray[0]">
+                              {{getStatus(note.AssignedTo)?.displayName | uppercase}}
+                            </span>
+                            <span class="td-attendee1" *ngIf="getStatus(note.AssignedTo)">
+                              <img [src]="getStatus(note.AssignedTo)?.file" alt="" class="img-fluid">
+                            </span>
+                          </div>
+                          <div class="dropdown-menu dd">
+                            <div class="form-group px-2 mb-0">
+                              <input class="form-control" placeholder="Search for member" type="text" name="">
+                            </div>
+                            <ul class="members-list mb-0">
+                              <li class="mb-1">
+                                <span class="user-img ml-2">
+                                  <span class="td-attendee1-more1"
+                                    *ngIf="!getStatus(note.AssignedTo)?.status"
+                                    [style.background-color]="colorsArray[0]">
+                                    {{getStatus(note.AssignedTo)?.displayName | uppercase}}
+                                  </span>
+                                  <span class="td-attendee1" *ngIf="getStatus(note.AssignedTo)">
+                                    <img [src]="getStatus(note.AssignedTo)?.file" alt=""
+                                      class="img-fluid">
+                                  </span>
+                                </span>
+                                <span class="mbmr-name">
+                                  {{getStatus(note.AssignedTo)?.fullname}}
+                                </span>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
                       </td>
 
                       <td class="" *ngIf="note.Type == ''">
@@ -451,7 +506,7 @@
                         </div>
                       </td>
 
-                      <td class="text-center">
+                      <td class="">
                         <!-- <button class="btn btn-sm btn-outline-success" > -->
                         <i class="fas fa-edit" data-toggle="modal" (click)="editNote(note,1)"
                           data-target="#noteEdit"></i>
@@ -506,10 +561,10 @@
                 <!-- <div class="col-2 text-center" (mouseover)="userProfile('assin')">
                           <a id="assin" data-toggle="tooltip" data-placement="right"
                             [title]="getStatus(note.CreatedBy)?.card">
-                            <span class="td-attendee-more1" *ngIf="!getStatus(note.CreatedBy)?.status">
+                            <span class="td-attendee1-more1" *ngIf="!getStatus(note.CreatedBy)?.status">
                               {{getStatus(note.CreatedBy)?.displayName | uppercase}}
                             </span>
-                            <span class="td-attendee1" *ngIf="getStatus(note.CreatedBy)">
+                            <span class="td-attendee11" *ngIf="getStatus(note.CreatedBy)">
                               <img [src]="getStatus(note.CreatedBy)?.file" alt="" class="img-fluid">
                             </span>
                           </a>
@@ -532,10 +587,10 @@
                     <div class="col-2 text-center " *ngIf="note.Type != ''" (mouseover)="userProfile('assin2')">
                       <a id="assin2" data-toggle="tooltip" data-placement="right"
                         [title]="getStatus(note.AssignedTo)?.card">
-                        <span class="td-attendee-more1 ml-1" *ngIf="!getStatus(note.AssignedTo)?.status">
+                        <span class="td-attendee1-more1 ml-1" *ngIf="!getStatus(note.AssignedTo)?.status">
                           {{getStatus(note.AssignedTo)?.displayName | uppercase}}
                         </span>
-                        <span class="td-attendee1" *ngIf="getStatus(note.AssignedTo)">
+                        <span class="td-attendee11" *ngIf="getStatus(note.AssignedTo)">
                           <img [src]="getStatus(note.AssignedTo)?.file" alt="" class="img-fluid">
                         </span>
                       </a>
@@ -616,7 +671,7 @@
           <div class="form-group col-4 dropdown dropright attendee-parent mt-2">
             <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <label for="">
-                <span class="td-attendee-add" style="padding: 0.5rem 0.725rem!important;"><i class="fas fa-user"></i>
+                <span class="td-attendee1-add" style="padding: 0.5rem 0.725rem!important;"><i class="fas fa-user"></i>
                 </span>
                 &nbsp;&nbsp;Assigned To</label>
             </div>
@@ -624,11 +679,11 @@
               <ul *ngFor="let attendies of usersList;let j=index" class="members-list mb-0">
                 <li class="mb-1" (click)="changeAssignedTo(attendies.email)">
                   <span class="user-img">
-                    <span class="td-attendee-more" *ngIf="!getStatus(attendies.email)?.status" style="padding: 0.5rem!important;
+                    <span class="td-attendee1-more" *ngIf="!getStatus(attendies.email)?.status" style="padding: 0.5rem!important;
                             margin-left: 0rem!important;" [style.background-color]="colorsArray[0]">
                       {{getStatus(attendies.email)?.displayName | uppercase}}
                     </span>
-                    <span class="td-attendee" *ngIf="getStatus(attendies.email)" style="padding: 0.5rem!important;
+                    <span class="td-attendee1" *ngIf="getStatus(attendies.email)" style="padding: 0.5rem!important;
                             margin-left: 0rem!important;">
                       <img [src]="getStatus(attendies.email)?.file" alt="" class="img-fluid">
                     </span>
@@ -641,10 +696,10 @@
             </div>
             <div>
               <div *ngIf="noteForm?.value.AssignedTo != '' && noteForm?.value.AssignedTo != null" class="mt-1">
-                <span class="td-attendee-more1 mr-3" *ngIf="!getStatus(noteForm?.value.AssignedTo)?.status">
+                <span class="td-attendee1-more1 mr-3" *ngIf="!getStatus(noteForm?.value.AssignedTo)?.status">
                   {{getStatus(noteForm?.value.AssignedTo)?.displayName | uppercase}}
                 </span>
-                <span class="td-attendee1" *ngIf="getStatus(noteForm?.value.AssignedTo)">
+                <span class="td-attendee11" *ngIf="getStatus(noteForm?.value.AssignedTo)">
                   <img [src]="getStatus(noteForm?.value.AssignedTo)?.file" alt="" class="img-fluid">
                 </span>
                 {{getStatus(noteForm?.value.AssignedTo)?.fullname}}
@@ -678,6 +733,49 @@
         <button type="button" class="btn btn-primary" (click)="saveChanges()" data-dismiss="modal">Save
           changes</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="plannerModal" tabindex="-1" role="dialog" aria-labelledby="plannerModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="plannerModalLabel">Planner</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <div class="row">
+         <!-- <div class="col-6">
+
+         </div> -->
+         <div class="col-12">
+          <div class="input-group mb-2">
+            <input class="form-control" [(ngModel)]="plannerTitle" placeholder="Enter Planner Title" />
+            <div class="input-group-append">
+              <span class="btn btn-outline-success" (click)="postGroupTask()">Add To Planner</span>
+            </div>
+          </div>
+          <div class="list-group">
+            <a class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let task of plannerTasks">
+              <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1">{{task?.title}}</h6>
+                <small>{{task?.createdDateTime | date:'medium'}}</small>
+              </div>
+              <!-- <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+              <small>Donec id elit non mi porta.</small> -->
+            </a>
+          </div>
+         </div>
+       </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
     </div>
   </div>
 </div>
